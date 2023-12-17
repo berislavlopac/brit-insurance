@@ -1,0 +1,44 @@
+{% extends "base.html.jinja" %}
+
+{% block custom_js %}
+<script type="application/javascript">
+
+var rowsCount = 3;
+
+function addRow() {
+    rowsCount++;
+    var newRow = document.getElementById("row_1").cloneNode(true);
+    newRow.id = "row_" + rowsCount;
+    var fields = newRow.getElementsByTagName("input");
+    fields.item(0).name="item_" + rowsCount;
+    fields.item(1).name="amount_" + rowsCount;
+    document.getElementById("list_items").appendChild(newRow);
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    <p><a href="{{ url_for("all-shopping-lists") }}" role="button" class="outline">Show all lists</a></p>
+      <!-- Tables -->
+      <section id="shopping-list">
+        <h2>New Shopping List</h2>
+        {% if error_message %}
+          <article class="error">Error! {{ error_message }}</article>
+        {% endif %}
+        <form id="new_list" method="post">
+          <div id="list_items">
+          {% for lineno in range(3) %}
+          <div id="row_{{ lineno }}">
+            <input name="item_{{ lineno }}" placeholder="Shopping item..." style="width: 80%">
+            &nbsp;&nbsp;
+            <input name="amount_{{ lineno }}" value="0.00" style="width: 18%">
+          </div>
+          {% endfor %}
+          </div>
+        <p><a href="#" role="button" class="outline" onclick="addRow()">Add row</a></p>
+        <button type="submit">Save list</button>
+        </form>
+      </section>
+      <!-- ./ Tables -->
+
+{% endblock %}

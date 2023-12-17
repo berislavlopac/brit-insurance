@@ -1,0 +1,26 @@
+{% extends "base.html.jinja" %}
+
+{% block content %}
+  <h2>Sign Up</h2>
+  <p>Please sign up to use the Shopping Lists app.</p>
+  {% if error_message %}
+    <article class="error">Error! {{ error_message }}</article>
+  {% endif %}
+  <form method="post">
+    <input
+        type="email"
+        name="email"
+        placeholder="Email address"
+        aria-label="Email address"
+        required
+    />
+    <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        aria-label="Password"
+        required
+    />
+    <button type="submit">Sign in</button>
+  </form>
+{% endblock %}

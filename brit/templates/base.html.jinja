@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Shopping Lists</title>
+  {% block custom_js %}{% endblock %}
+
+  <!-- Pico.css (Classless version) -->
+  <link rel="stylesheet" href="/static/pico.min.css"/>
+  <link rel="stylesheet" href="/static/custom.css"/>
+</head>
+
+<body>
+<!-- Main -->
+<main class="container">
+  <!-- Header -->
+  <hgroup>
+    <h1>Shopping Lists</h1>
+    {% if request.user.is_authenticated %}
+    <p>Signed in as <code>{{ request.user.identity }}</code>. <a href="{{ url_for("sign-out") }}">Sign out.</a></p>
+    {% endif %}
+  </hgroup>
+  <!-- ./ Header -->
+
+  {% block content %}{% endblock %}
+</main>
+<!-- ./ Main -->
+
+<!-- Footer -->
+<footer class="container">
+  <small>Built with <a href="https://picocss.com">Pico</a>.</small>
+</footer>
+<!-- ./ Footer -->
+</body>
+</html>

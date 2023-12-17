@@ -1,0 +1,33 @@
+{% extends "base.html.jinja" %}
+
+{% block content %}
+    <p><a href="{{ url_for("new-shopping-list") }}" role="button">Create new list</a></p>
+      <!-- Tables -->
+      <section id="shopping-lists">
+        <h2>All Shopping Lists</h2>
+        <figure>
+          <table role="grid">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Created</th>
+                <th scope="col">Items</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for shopping_list in shopping_lists %}
+              <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ shopping_list.timestamp|datetime }}</td>
+                <td><a href="{{ url_for("shopping-list", timestamp=shopping_list.timestamp) }}">{{ shopping_list.description }}</a></td>
+                <td>£{{ shopping_list.total }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </figure>
+      </section>
+      <!-- ./ Tables -->
+
+{% endblock %}

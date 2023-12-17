@@ -1,0 +1,100 @@
+[project]
+name = "brit-insurance"
+version = "1.0.0"
+description = "Technical task for Brit Insurance."
+license = {"text" = "MIT"}
+keywords = []
+authors = [
+  { name = "Berislav Lopac", email = "berislav@lopac.net" },
+]
+classifiers = [
+  "Private :: Do Not Upload",
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "starlette>=0.33.0",
+    "starlette-login>=0.2.1",
+    "uvicorn>=0.24.0.post1",
+    "jinja2>=3.1.2",
+    "tinydb>=4.8.0",
+    "pydantic>=2.5.2",
+    "email-validator>=2.1.0.post1",
+    "python-multipart>=0.0.6",
+    "bcrypt>=4.1.2",
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project.urls]
+Source = ""
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.2.2",
+    "pytest-cov>=4.0.0",
+    "pytest-spec>=3.2.0",
+    "pytest-asyncio>=0.20.3",
+    "black>=23.1.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.1",
+    "ruff>=0.0.254",
+]
+
+[tool.pdm.scripts]
+tests.cmd = "pytest --spec --cov"
+check-lint.shell = """
+    ruff format --check .
+    isort --check .
+    ruff .
+"""
+requirements.shell = "pip-compile --resolver backtracking --allow-unsafe --output-file requirements.txt"
+check-typing.cmd = "mypy --install-types --non-interactive brit/"
+checks.composite = ["check-lint", "check-typing"]
+new-commits.shell = "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-decorate"
+doc-reqs.cmd = "pdm export -dG docs --without-hashes --no-default"
+server = "uvicorn brit:app --host 0.0.0.0 --port 8000 --reload --log-level debug"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["brit/", ]
+omit = ["*/tests/*", ]
+
+[tool.coverage.report]
+skip_covered = false
+show_missing = true
+fail_under = 90
+exclude_also = ["pragma: no cover", "@abstract",]
+omit = ["brit/templates/*.jinja"]
+
+[tool.black]
+line-length = 96
+target-version = ["py311"]
+verbose = false
+skip-string-normalization = false
+
+[tool.isort]
+profile = "black"
+line_length = 96
+filter_files = true
+force_alphabetical_sort_within_sections = true
+
+[tool.mypy]
+mypy_path = "brit/"
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 96
+target-version = "py310"
+output-format = "grouped"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
